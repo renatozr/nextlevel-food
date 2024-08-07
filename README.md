@@ -15,7 +15,7 @@
 ## About The Project
 
 To exercise Next.js and it's App Router feature.<br />
-Based on <a href="https://www.udemy.com/course/nextjs-react-the-complete-guide">Maximilian Schwarzmüller Course</a>.
+Based on <a href="https://www.udemy.com/course/nextjs-react-the-complete-guide">Maximilian Schwarzmüller's Course</a>.
 
 <!-- GETTING STARTED -->
 
