@@ -24,13 +24,13 @@ Based on <a href="https://www.udemy.com/course/nextjs-react-the-complete-guide">
 ### Prerequisites
 
 - NPM
-- AWS S3
+- Supabase
 
 ### Installation
 
 1. Clone the repo
    ```sh
-   git clone https://github.com/renatozr/nextlevel-food.git
+   git clone git@github.com:renatozr/nextlevel-food.git
    ```
 2. Enter the directory
    ```sh
@@ -42,9 +42,7 @@ Based on <a href="https://www.udemy.com/course/nextjs-react-the-complete-guide">
    ```
 4. Fill in the environment variables
    ```sh
-   AWS_ACCESS_KEY_ID=
-   AWS_SECRET_ACCESS_KEY=
-   AWS_BUCKET_NAME=
+
    ```
 5. Run the project
    ```sh
