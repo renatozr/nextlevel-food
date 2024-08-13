@@ -24,7 +24,7 @@ Based on <a href="https://www.udemy.com/course/nextjs-react-the-complete-guide">
 ### Prerequisites
 
 - NPM
-- Supabase
+- Supabase Project
 
 ### Installation
 
@@ -40,11 +40,22 @@ Based on <a href="https://www.udemy.com/course/nextjs-react-the-complete-guide">
    ```sh
    npm install
    ```
-4. Fill in the environment variables
+4. Rename .env.example file to .env.local
+5. Fill in the environment variables
    ```sh
-
+   SUPABASE_URL=
+   SUPABASE_SERVICE_ROLE_KEY=
+   SUPABASE_DB_USER=
+   SUPABASE_DB_HOST=
+   SUPABASE_DB_NAME=
+   SUPABASE_DB_PASSWORD=
+   SUPABASE_DB_PORT=
    ```
-5. Run the project
+6. Setup Supabase
+   ```sh
+   npm run supa
+   ```
+7. Run the project
    ```sh
    npm run dev
    ```

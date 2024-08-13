@@ -1,5 +1,21 @@
-const sql = require("better-sqlite3");
-const db = sql("meals.db");
+require("dotenv").config({ path: ".env.local" });
+const { createClient } = require("@supabase/supabase-js");
+const { Pool } = require("pg");
+const fs = require("fs-extra");
+const path = require("path");
+
+const supabase = createClient(
+  process.env.SUPABASE_URL,
+  process.env.SUPABASE_SERVICE_ROLE_KEY
+);
+
+const pool = new Pool({
+  user: process.env.SUPABASE_DB_USER,
+  host: process.env.SUPABASE_DB_HOST,
+  database: process.env.SUPABASE_DB_NAME,
+  password: process.env.SUPABASE_DB_PASSWORD,
+  port: process.env.SUPABASE_DB_PORT,
+});
 
 const dummyMeals = [
   {
@@ -164,38 +180,98 @@ const dummyMeals = [
   },
 ];
 
-db.prepare(
-  `
-   CREATE TABLE IF NOT EXISTS meals (
-       id INTEGER PRIMARY KEY AUTOINCREMENT,
-       slug TEXT NOT NULL UNIQUE,
-       title TEXT NOT NULL,
-       image TEXT NOT NULL,
-       summary TEXT NOT NULL,
-       instructions TEXT NOT NULL,
-       creator TEXT NOT NULL,
-       creator_email TEXT NOT NULL
-    )
-`
-).run();
-
-async function initData() {
-  const stmt = db.prepare(`
-      INSERT INTO meals VALUES (
-         null,
-         @slug,
-         @title,
-         @image,
-         @summary,
-         @instructions,
-         @creator,
-         @creator_email
+async function createTable() {
+  const client = await pool.connect();
+  try {
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS meals (
+        id SERIAL PRIMARY KEY,
+        slug TEXT NOT NULL UNIQUE,
+        title TEXT NOT NULL,
+        image TEXT NOT NULL,
+        summary TEXT NOT NULL,
+        instructions TEXT NOT NULL,
+        creator TEXT NOT NULL,
+        creator_email TEXT NOT NULL
       )
-   `);
-
-  for (const meal of dummyMeals) {
-    stmt.run(meal);
+    `);
+  } finally {
+    client.release();
   }
+
+  console.log("Tabela criada com sucesso!");
 }
 
-initData();
+async function initData() {
+  const client = await pool.connect();
+  try {
+    const insertQuery = `
+      INSERT INTO meals (slug, title, image, summary, instructions, creator, creator_email)
+      VALUES ($1, $2, $3, $4, $5, $6, $7)
+    `;
+
+    for (const meal of dummyMeals) {
+      await client.query(insertQuery, [
+        meal.slug,
+        meal.title,
+        meal.image,
+        meal.summary,
+        meal.instructions,
+        meal.creator,
+        meal.creator_email,
+      ]);
+    }
+  } finally {
+    client.release();
+  }
+
+  console.log("Dados iniciados com sucesso!");
+}
+
+async function createBucket() {
+  const { error: bucketError } = await supabase.storage.createBucket("meals", {
+    public: true,
+  });
+
+  if (bucketError) {
+    console.error("Erro ao criar o bucket:", bucketError.message);
+    return;
+  }
+
+  console.log("Bucket criado com sucesso");
+}
+
+async function uploadImages() {
+  const pathToImages = "./assets/meals";
+  const files = await fs.readdir(pathToImages);
+
+  for (const file of files) {
+    const filePath = path.join(pathToImages, file);
+    const fileBuffer = await fs.readFile(filePath);
+
+    const { error } = await supabase.storage
+      .from("meals")
+      .upload(file, fileBuffer, {
+        cacheControl: "3600",
+        upsert: true,
+      });
+
+    if (error) {
+      console.error(`Erro ao carregar o arquivo ${file}:`, error);
+      return;
+    }
+  }
+
+  console.log("Imagens carregadas com sucesso!");
+}
+
+async function main() {
+  await createTable();
+  await initData();
+  await createBucket();
+  await uploadImages();
+
+  console.log("\nSupabase preparado!");
+}
+
+main().catch(console.error);

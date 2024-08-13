@@ -9,7 +9,7 @@ export default function MealItem({ title, slug, image, summary, creator }) {
       <header>
         <div className={classes.image}>
           <Image
-            src={`https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${image}`}
+            src={`${process.env.SUPABASE_URL}/storage/v1/object/public/meals/${image}`}
             alt={title}
             fill
           />

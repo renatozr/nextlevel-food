@@ -6,11 +6,11 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "supa": "node setupSupabase.js"
   },
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.549.0",
-    "better-sqlite3": "^9.4.4",
+    "@supabase/supabase-js": "^2.45.1",
     "next": "14.0.3",
     "react": "^18",
     "react-dom": "^18",
@@ -18,7 +18,10 @@
     "xss": "^1.0.15"
   },
   "devDependencies": {
+    "dotenv": "^16.4.5",
     "eslint": "^8",
-    "eslint-config-next": "14.0.3"
+    "eslint-config-next": "14.0.3",
+    "fs-extra": "^11.2.0",
+    "pg": "^8.12.0"
   }
 }

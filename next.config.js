@@ -4,9 +4,9 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: `${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com`,
+        hostname: process.env.SUPABASE_URL.replace("https://", ""),
         port: "",
-        pathname: "/**",
+        pathname: "/storage/**",
       },
     ],
   },
