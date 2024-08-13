@@ -199,7 +199,7 @@ async function createTable() {
     client.release();
   }
 
-  console.log("Tabela criada com sucesso!");
+  console.log("Table created successfully!");
 }
 
 async function initData() {
@@ -225,7 +225,7 @@ async function initData() {
     client.release();
   }
 
-  console.log("Dados iniciados com sucesso!");
+  console.log("Data initied successfully!");
 }
 
 async function createBucket() {
@@ -234,11 +234,11 @@ async function createBucket() {
   });
 
   if (bucketError) {
-    console.error("Erro ao criar o bucket:", bucketError.message);
+    console.error("Error creating bucket:", bucketError.message);
     return;
   }
 
-  console.log("Bucket criado com sucesso");
+  console.log("Bucket created successfully!");
 }
 
 async function uploadImages() {
@@ -257,12 +257,12 @@ async function uploadImages() {
       });
 
     if (error) {
-      console.error(`Erro ao carregar o arquivo ${file}:`, error);
+      console.error(`Error uploading ${file} file:`, error);
       return;
     }
   }
 
-  console.log("Imagens carregadas com sucesso!");
+  console.log("Images uploaded successfully!");
 }
 
 async function main() {
@@ -271,7 +271,7 @@ async function main() {
   await createBucket();
   await uploadImages();
 
-  console.log("\nSupabase preparado!");
+  console.log("\nSupabase ready!");
 }
 
 main().catch(console.error);
