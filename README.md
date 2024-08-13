@@ -6,7 +6,7 @@
     A platform for foodies to share their favorite recipes with the world
     <br />
     <br />
-    <a href="https://nextlevel-food-pi.vercel.app/">View Demo</a>
+    <a href="https://nextlevel-food-one.vercel.app/">View Demo</a>
   </p>
 </div>
 
